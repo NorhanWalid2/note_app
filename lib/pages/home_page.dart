@@ -13,10 +13,17 @@ class HomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return AddNoteButtomSheet();
-              });
+            context: context,
+            builder: (context) {
+              return AddNoteButtomSheet();
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(20),
+                bottom: Radius.circular(20),
+              ),
+            ),
+          );
         },
         child: Icon(Icons.add),
         shape: CircleBorder(),

@@ -23,7 +23,7 @@ class NoteCard extends StatelessWidget {
               padding: const EdgeInsets.only(top: 16.0, bottom: 16),
               child: Text(
                 'Build your career with Norhan Walid',
-                style: TextStyle(fontSize: 20, color: Colors.black54),
+                style: TextStyle(fontSize: 15, color: Colors.black54),
               ),
             ),
             trailing: IconButton(
