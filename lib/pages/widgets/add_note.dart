@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_app/pages/widgets/custom_button.dart';
 import 'package:notes_app/pages/widgets/custom_text_field.dart';
 
 class AddNoteButtomSheet extends StatelessWidget {
@@ -8,19 +9,25 @@ class AddNoteButtomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          CustomTextField(hint: 'title', labeltextt: 'title', obscure: false),
-          SizedBox(
-            height: 30,
-          ),
-          CustomTextField(
-            hint: 'content',
-            labeltextt: 'content',
-            obscure: false,
-            maxLine: 5,
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            CustomTextField(hint: 'title', labeltextt: 'title', obscure: false),
+            SizedBox(
+              height: 30,
+            ),
+            CustomTextField(
+              hint: 'content',
+              labeltextt: 'content',
+              obscure: false,
+              maxLine: 5,
+            ),
+            SizedBox(
+              height: 90,
+            ),
+            CustomButton(conText: 'Add'),
+          ],
+        ),
       ),
     );
   }
