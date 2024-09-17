@@ -12,17 +12,27 @@ class CustomTextField extends StatelessWidget {
     this.icon,
     this.onchange,
     this.maxLine = 1,
+    this.onSave,
   });
-  String labeltextt;
-  bool obscure;
-  String hint;
-  Widget? icon;
+  final String labeltextt;
+  final bool obscure;
+  final String hint;
+  final Widget? icon;
   final int maxLine;
   TextEditingController controller = TextEditingController();
-  Function(String)? onchange;
+  final Function(String)? onchange;
+  final void Function(String?)? onSave;
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if (value?.isEmpty ?? true) {
+          return "required field";
+        } else {
+          return null;
+        }
+      },
+      onSaved: onSave,
       maxLines: maxLine,
       cursorColor: KPrimaryColor,
       controller: controller,
@@ -42,6 +52,16 @@ class CustomTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: KPrimaryColor),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide:
+              const BorderSide(color: Colors.red), // Red border on error
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+              color: Colors.red), // Red border when focused in error state
           borderRadius: BorderRadius.circular(10),
         ),
         labelText: labeltextt,
