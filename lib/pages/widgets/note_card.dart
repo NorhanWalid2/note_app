@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/pages/edit_note_page.dart';
 //import 'package:notes_app/pages/widgets/edit_note_body.dart';
 
 class NoteCard extends StatelessWidget {
-  const NoteCard({super.key});
-
+  const NoteCard({super.key, required this.note});
+  final NoteModel note;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -24,13 +25,13 @@ class NoteCard extends StatelessWidget {
           children: [
             ListTile(
               title: Text(
-                'Flutter Tips',
+                note.title,
                 style: TextStyle(fontSize: 30, color: Colors.black),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 16.0, bottom: 16),
                 child: Text(
-                  'Build your career with Norhan Walid',
+                  note.subtitle,
                   style: TextStyle(fontSize: 15, color: Colors.black54),
                 ),
               ),
@@ -46,7 +47,7 @@ class NoteCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 24.0),
               child: Text(
-                'septamper 15, 2024',
+                note.date,
                 style: TextStyle(
                     fontSize: 13, color: Colors.black.withOpacity(.6)),
               ),

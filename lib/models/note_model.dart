@@ -17,4 +17,6 @@ class NoteModel {
       required this.subtitle,
       required this.date,
       required this.color});
+
+  get notes => null;
 }
