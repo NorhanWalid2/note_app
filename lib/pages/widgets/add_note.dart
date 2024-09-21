@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:notes_app/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:notes_app/cubits/add_note_cubit/add_note_state.dart';
+import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/pages/widgets/custom_button.dart';
 import 'package:notes_app/pages/widgets/custom_text_field.dart';
 
@@ -11,9 +12,10 @@ class AddNoteButtomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
+    return BlocProvider(
+      create: (context) => AddNoteCubit(),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: BlocConsumer<AddNoteCubit, AddNoteState>(
           listener: (context, state) {
             if (state is AddNotesFailer) {
@@ -24,9 +26,11 @@ class AddNoteButtomSheet extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            return ModalProgressHUD(
-                inAsyncCall: state is AddNotesLoading ? true : false,
-                child: FormAddNote());
+            return SingleChildScrollView(
+              child: ModalProgressHUD(
+                  inAsyncCall: state is AddNotesLoading ? true : false,
+                  child: FormAddNote()),
+            );
           },
         ),
       ),
@@ -56,11 +60,23 @@ class _FormAddNoteState extends State<FormAddNote> {
         children: [
           CustomTextField(
             onSave: (value) {
-              title = title;
+              title = value;
             },
             hint: 'title',
             labeltextt: 'title',
             obscure: false,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          CustomTextField(
+            onSave: (value) {
+              subtitle = value;
+            },
+            hint: 'content',
+            labeltextt: 'content',
+            obscure: false,
+            maxLine: 5,
           ),
           SizedBox(
             height: 30,
@@ -82,6 +98,12 @@ class _FormAddNoteState extends State<FormAddNote> {
             ontap: () {
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
+                var noteModel = NoteModel(
+                    title: title!,
+                    subtitle: subtitle!,
+                    date: DateTime.now().toString(),
+                    color: Colors.blue.value);
+                BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
               } else {
                 autovalidateMode = AutovalidateMode.always;
                 setState(() {});
