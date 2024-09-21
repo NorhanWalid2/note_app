@@ -14,25 +14,24 @@ class AddNoteButtomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddNoteCubit(),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: BlocConsumer<AddNoteCubit, AddNoteState>(
-          listener: (context, state) {
-            if (state is AddNotesFailer) {
-              print('failed ${state.errorMessage}');
-            }
-            if (state is AddNotesSuccessful) {
-              Navigator.pop(context);
-            }
-          },
-          builder: (context, state) {
-            return SingleChildScrollView(
-              child: ModalProgressHUD(
-                  inAsyncCall: state is AddNotesLoading ? true : false,
-                  child: FormAddNote()),
-            );
-          },
-        ),
+      child: BlocConsumer<AddNoteCubit, AddNoteState>(
+        listener: (context, state) {
+          if (state is AddNotesFailer) {
+            print('failed ${state.errorMessage}');
+          }
+          if (state is AddNotesSuccessful) {
+            Navigator.pop(context);
+          }
+        },
+        builder: (context, state) {
+          return AbsorbPointer(
+            absorbing: state is AddNotesLoading ? true : false,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(child: FormAddNote()),
+            ),
+          );
+        },
       ),
     );
   }
@@ -79,35 +78,28 @@ class _FormAddNoteState extends State<FormAddNote> {
             maxLine: 5,
           ),
           SizedBox(
-            height: 30,
+            height: 60,
           ),
-          CustomTextField(
-            onSave: (value) {
-              subtitle = value;
-            },
-            hint: 'content',
-            labeltextt: 'content',
-            obscure: false,
-            maxLine: 5,
-          ),
-          SizedBox(
-            height: 90,
-          ),
-          CustomButton(
-            conText: 'Add',
-            ontap: () {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-                var noteModel = NoteModel(
-                    title: title!,
-                    subtitle: subtitle!,
-                    date: DateTime.now().toString(),
-                    color: Colors.blue.value);
-                BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
-              } else {
-                autovalidateMode = AutovalidateMode.always;
-                setState(() {});
-              }
+          BlocBuilder<AddNoteCubit, AddNoteState>(
+            builder: (context, state) {
+              return CustomButton(
+                isLoading: state is AddNotesLoading ? true : false,
+                conText: 'Add',
+                ontap: () {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    var noteModel = NoteModel(
+                        title: title!,
+                        subtitle: subtitle!,
+                        date: DateTime.now().toString(),
+                        color: Colors.blue.value);
+                    BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
+                  } else {
+                    autovalidateMode = AutovalidateMode.always;
+                    setState(() {});
+                  }
+                },
+              );
             },
           ),
         ],
