@@ -2,16 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:notes_app/constants.dart';
 import 'package:notes_app/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:notes_app/cubits/add_note_cubit/add_note_state.dart';
 import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/pages/widgets/custom_button.dart';
 import 'package:notes_app/pages/widgets/custom_text_field.dart';
 
-class AddNoteButtomSheet extends StatelessWidget {
+class AddNoteButtomSheet extends StatefulWidget {
   const AddNoteButtomSheet({super.key});
 
+  @override
+  State<AddNoteButtomSheet> createState() => _AddNoteButtomSheetState();
+}
+
+class _AddNoteButtomSheetState extends State<AddNoteButtomSheet> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -19,7 +27,11 @@ class AddNoteButtomSheet extends StatelessWidget {
       child: BlocConsumer<AddNoteCubit, AddNoteState>(
         listener: (context, state) {
           if (state is AddNotesFailer) {
-            print('failed ${state.errorMessage}');
+            print('eeror ${state.errorMessage}');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text('Failed to add note: ${state.errorMessage}')),
+            );
           }
           if (state is AddNotesSuccessful) {
             Navigator.pop(context);
@@ -97,9 +109,13 @@ class _FormAddNoteState extends State<FormAddNote> {
                     var noteModel = NoteModel(
                         title: title!,
                         subtitle: subtitle!,
-                        date: DateTime.now().toString(),
+                        date: DateFormat('yyyy-MM-dd – kk:mm')
+                            .format(DateTime.now()),
                         color: Colors.blue.value);
                     BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
+                    title = null;
+                    subtitle = null;
+                    formKey.currentState!.reset();
                   } else {
                     autovalidateMode = AutovalidateMode.always;
                     setState(() {});

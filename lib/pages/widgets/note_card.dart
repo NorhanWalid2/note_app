@@ -17,7 +17,7 @@ class NoteCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.only(top: 24, left: 24, bottom: 24),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 240, 148, 142),
+          color: Color(note.color),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(

@@ -13,13 +13,25 @@ void main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(NoteModelAdapter());
+
   await Hive.openBox<NoteModel>(kNotesBox);
 
   runApp(const NotesApp());
 }
 
-class NotesApp extends StatelessWidget {
+class NotesApp extends StatefulWidget {
   const NotesApp({super.key});
+
+  @override
+  State<NotesApp> createState() => _NotesAppState();
+}
+
+class _NotesAppState extends State<NotesApp> {
+  // @override
+  // void dispose() {
+  //   Hive.box(kNotesBox).close(); // Close the box when the app is disposed
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
