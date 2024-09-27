@@ -7,8 +7,10 @@ class CustomAppBar extends StatelessWidget {
     super.key,
     required this.text,
     this.icon,
+    this.ontab,
   });
   Widget? icon;
+  final Function()? ontab;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -31,7 +33,7 @@ class CustomAppBar extends StatelessWidget {
               color: Colors.white.withOpacity(0.1),
               borderRadius: BorderRadius.circular(16)),
           child: Center(
-            child: icon,
+            child: GestureDetector(onTap: ontab, child: icon),
           ),
         ),
       ],
