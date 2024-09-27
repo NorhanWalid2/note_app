@@ -11,31 +11,28 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NotesCubit(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (context) {
-                return AddNoteButtomSheet();
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
-                  bottom: Radius.circular(20),
-                ),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) {
+              return AddNoteButtomSheet();
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(20),
+                bottom: Radius.circular(20),
               ),
-            );
-          },
-          child: Icon(Icons.add),
-          shape: CircleBorder(),
-        ),
-        body: NotesViewBody(),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+        shape: CircleBorder(),
       ),
+      body: NotesViewBody(),
     );
   }
 }

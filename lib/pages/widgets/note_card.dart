@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/cubits/notes_cubit/notes_cubit.dart';
 import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/pages/edit_note_page.dart';
 //import 'package:notes_app/pages/widgets/edit_note_body.dart';
@@ -36,7 +38,9 @@ class NoteCard extends StatelessWidget {
                 ),
               ),
               trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  _showDeleteConfirmationDialog(context);
+                },
                 icon: Icon(
                   Icons.delete,
                   color: Colors.black,
@@ -55,6 +59,36 @@ class NoteCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Note'),
+          content: Text('Are you sure you want to delete this note?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Call delete method from the Bloc
+                note.delete();
+                Navigator.of(context).pop();
+                BlocProvider.of<NotesCubit>(context)
+                    .FetchAllNotes(); // Close the dialog
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:notes_app/constants.dart';
 import 'package:notes_app/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:notes_app/cubits/add_note_cubit/add_note_state.dart';
+import 'package:notes_app/cubits/notes_cubit/notes_cubit.dart';
 import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/pages/widgets/custom_button.dart';
 import 'package:notes_app/pages/widgets/custom_text_field.dart';
@@ -34,6 +35,7 @@ class _AddNoteButtomSheetState extends State<AddNoteButtomSheet> {
             );
           }
           if (state is AddNotesSuccessful) {
+            BlocProvider.of<NotesCubit>(context).FetchAllNotes();
             Navigator.pop(context);
           }
         },
